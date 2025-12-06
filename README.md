@@ -10,15 +10,25 @@ The infrastructure code and documentation for TaskGroup A can be found in the [T
 
 This section details the repositories and evidence for TaskGroup B.
 
+### Project Structure
+
+```
+Task-GroupB/
+├── Task-GroupB1/      # Uptime Kuma Deployment
+└── Task-GroupB2/      # Laravel Application Deployment
+```
+
 ### TaskGroup B1: Uptime Kuma
 
 *   **Repository:** [https://github.com/Ahmedheggy/uptime-kuma.git](https://github.com/Ahmedheggy/uptime-kuma.git)
 
 #### Screenshots
 
-![Deployment](./Task-GroupB/Task-GroupB1/Deployment.png)
-![TaskGroupB1](./Task-GroupB/Task-GroupB1/TaskGroupB1.png)
-![TaskGroupB-1](./Task-GroupB/Task-GroupB1/TaskGroupB-1.png)
+<img src="./Task-GroupB/Task-GroupB1/TaskGroupB1.png" width="600" alt="TaskGroupB1">
+
+<img src="./Task-GroupB/Task-GroupB1/TaskGroupB-1.png" width="600" alt="TaskGroupB-1">
+
+<img src="./Task-GroupB/Task-GroupB1/Deployment.png" width="600" alt="Deployment">
 
 ### TaskGroup B2: Laravel Application
 
@@ -26,5 +36,6 @@ This section details the repositories and evidence for TaskGroup B.
 
 #### Screenshots
 
-![TaskGroupB2](./Task-GroupB/Task-GroupB2/TaskGroupB2.png)
-![Migration Proof](./Task-GroupB/Task-GroupB2/migration-prove.png)
+<img src="./Task-GroupB/Task-GroupB2/TaskGroupB2.png" width="600" alt="TaskGroupB2">
+
+<img src="./Task-GroupB/Task-GroupB2/migration-prove.png" width="600" alt="Migration Proof">
