@@ -1,4 +1,6 @@
-![Obelion Cloud Automation Assessment Banner](./obelion-banner.png)
+<p align="center">
+  <img src="./obelion-banner.png" alt="Obelion Cloud Automation Assessment Banner" width="40%">
+</p>
 
 # Obelion Cloud Automation Assessment
 
