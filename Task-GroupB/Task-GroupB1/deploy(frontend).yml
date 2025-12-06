@@ -1,0 +1,46 @@
+name: Deploy Frontend
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v3
+
+            # 1. The requested "Build" step
+            - name: Build Application
+              run: echo "building...by ahmed hany"
+
+            # 2. Transfer docker-compose.yml to the server
+            - name: Copy Config via SCP
+              uses: appleboy/scp-action@master
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  source: "compose.yaml"
+                  target: "/opt/uptime-kuma/"
+
+            # 3. Deploy using the docker-compose binary installed in bootstrap
+            - name: Deploy via SSH
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  script: |
+                      # install docker-compose if not installed
+                      if ! docker-compose version > /dev/null 2>&1; then
+                          echo "docker-compose not found or broken, installing..."
+                          sudo curl -L "https://github.com/docker/compose/releases/download/v2.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+                          sudo chmod +x /usr/local/bin/docker-compose
+                      fi
+
+                      cd /opt/uptime-kuma
+                      sudo docker-compose -f compose.yaml pull
+                      sudo docker-compose -f compose.yaml up -d
