@@ -19,56 +19,61 @@ This repository contains production-ready Infrastructure as Code (Terraform) and
 
 ### High-Level Architecture
 ```mermaid
-graph TB
-    subgraph Internet
-        User([End User])
-    end
+graph LR
+    User([👤 User]) -->|HTTP| Frontend
+    Frontend[🖥️ Frontend<br/>Uptime Kuma<br/>Port 80] -->|Monitor| Backend
+    Backend[⚙️ Backend<br/>Laravel API<br/>Port 80] -->|Query| Database
+    Database[(💾 RDS MySQL<br/>Multi-AZ<br/>Port 3306)]
     
-    subgraph AWS_Region[AWS Region: us-east-1]
-        subgraph VPC[VPC: 10.0.0.0/16]
-            IGW[Internet Gateway]
-            
-            subgraph PublicSubnets[Public Subnets]
-                SubnetA[Public Subnet A<br/>10.0.1.0/24<br/>us-east-1a]
-                SubnetB[Public Subnet B<br/>10.0.2.0/24<br/>us-east-1b]
-                Frontend[Frontend Instance<br/>Uptime Kuma<br/>Ubuntu 22.04]
-                Backend[Backend Instance<br/>Laravel API<br/>Ubuntu 22.04]
-            end
-            
-            subgraph PrivateSubnets[Private Subnets]
-                PrivA[Private Subnet A<br/>10.0.3.0/24<br/>us-east-1a]
-                PrivB[Private Subnet B<br/>10.0.4.0/24<br/>us-east-1b]
-                RDS[(RDS MySQL 8.0<br/>Multi-AZ)]
-            end
-        end
-    end
+    CloudWatch[📊 CloudWatch] -.->|Monitor| Frontend
+    CloudWatch -.->|Monitor| Backend
+    CloudWatch -->|Alert| SNS[📧 SNS Email]
     
-    User -->|HTTP:80| IGW
-    IGW --> Frontend
-    Frontend -->|HTTP:80| Backend
-    Backend -->|MySQL:3306| RDS
-    
-    style Frontend fill:#FF7771
-    style Backend fill:#F45671
-    style RDS fill:#88765B
+    style Frontend fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    style Backend fill:#E27D60,stroke:#A85544,color:#fff
+    style Database fill:#58A55C,stroke:#3D7340,color:#fff
+    style CloudWatch fill:#F4A261,stroke:#C17E4D,color:#fff
+    style SNS fill:#E76F51,stroke:#B34F3A,color:#fff
 ```
 
-### Network Security Architecture
+### Network Architecture
 ```mermaid
-graph LR
-    subgraph SecurityLayers[Security Layers]
-        subgraph FrontendSG[Frontend Security Group]
-            F1[Inbound: 0.0.0.0/0:80,22<br/>Outbound: All]
+graph TB
+    Internet((Internet))
+    
+    subgraph VPC[VPC 10.0.0.0/16]
+        IGW[Internet Gateway]
+        
+        subgraph Public[Public Subnets - 2 AZs]
+            PubA[10.0.1.0/24<br/>us-east-1a]
+            PubB[10.0.2.0/24<br/>us-east-1b]
         end
         
-        subgraph BackendSG[Backend Security Group]
-            B1[Inbound: Frontend SG:80<br/>0.0.0.0/0:22<br/>Outbound: All]
+        subgraph Private[Private Subnets - 2 AZs]
+            PrivA[10.0.3.0/24<br/>us-east-1a]
+            PrivB[10.0.4.0/24<br/>us-east-1b]
         end
         
-        subgraph DatabaseSG[Database Security Group]
-            D1[Inbound: Backend SG:3306<br/>Outbound: None]
-        end
+        FE[Frontend EC2]
+        BE[Backend EC2]
+        DB[(RDS)]
+        
+        IGW --> PubA
+        IGW --> PubB
+        PubA -.-> FE
+        PubB -.-> BE
+        PrivA -.-> DB
+        PrivB -.-> DB
     end
+    
+    Internet --> IGW
+    
+    style VPC fill:#f0f0f0,stroke:#333,stroke-width:3px
+    style Public fill:#d4edda,stroke:#28a745
+    style Private fill:#fff3cd,stroke:#ffc107
+    style FE fill:#4A90E2,color:#fff
+    style BE fill:#E27D60,color:#fff
+    style DB fill:#58A55C,color:#fff
 ```
 
 ## Infrastructure Components
