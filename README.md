@@ -1,3 +1,5 @@
+![Obelion Cloud Automation Assessment Banner](./obelion-banner.png)
+
 # Obelion Cloud Automation Assessment
 
 This repository contains the assessment tasks for the Obelion Cloud Automation role.
@@ -13,17 +15,27 @@ This section details the repositories and screenshots for TaskGroup B.
 ### TaskGroup B1: Uptime Kuma
 
 *   **Repository:** [https://github.com/Ahmedheggy/uptime-kuma.git](https://github.com/Ahmedheggy/uptime-kuma.git)
+*   **Objective:** Automated build and deployment workflow triggered on main branch updates
 
 #### Screenshots
 
+**GitHub Actions Workflow Configuration**
 ![TaskGroupB1](./Task-GroupB/Task-GroupB1/TaskGroupB1.png)
+
+**Build Step Execution**
 ![TaskGroupB-1](./Task-GroupB/Task-GroupB1/TaskGroupB-1.png)
+
+**Successful Deployment to Ubuntu 22.04 Server**
 ![Deployment](./Task-GroupB/Task-GroupB1/Deployment.png)
 ### TaskGroup B2: Laravel Application
 
 *   **Repository:** [https://github.com/Ahmedheggy/laravel.git](https://github.com/Ahmedheggy/laravel.git)
+*   **Objective:** Automated deployment with shell script execution for pulling changes and running database migrations
 
 #### Screenshots
 
+**GitHub Actions Workflow & Deployment Script**
 ![TaskGroupB2](./Task-GroupB/Task-GroupB2/TaskGroupB2.png)
+
+**Database Migration Execution Proof**
 ![Migration Proof](./Task-GroupB/Task-GroupB2/migration-prove.png)
